@@ -60,3 +60,6 @@ __pycache__/
 .RData
 .secure_phi_index.tsv
 .Rproj.user
+debugging*
+test_results/
+project_tracker.yaml

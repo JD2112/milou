@@ -88,7 +88,7 @@ for (i in seq_along(coverage_files)) {
         first_line <- readLines(f, n=1)
         if (grepl("^track", first_line)) {
             cat(paste("Detected track line in", f, "- creating temporary cleaned file.\n"))
-            tmp_f <- tempfile(pattern = basename(f))
+            tmp_f <- tempfile(pattern = basename(f), tmpdir = ".")
             # Use tail to skip the first line (efficiently)
             system(paste("tail -n +2", shQuote(f), ">", shQuote(tmp_f)))
             cleaned_coverage_files[i] <- tmp_f

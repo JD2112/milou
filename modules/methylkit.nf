@@ -39,6 +39,11 @@ process METHYLKIT_ANALYSIS {
     echo "Q-value threshold: ${qvalue}" >> methylkit_log.txt
     echo "Min per group: ${min_per_group}" >> methylkit_log.txt
 
+    # Redirect temporary files to local task directory on /data
+    export TMPDIR="\$PWD/tmp"
+    mkdir -p "\$TMPDIR"
+    trap 'rm -rf "\$TMPDIR"' EXIT
+
     # Force re-run for script updates
     export OPENBLAS_NUM_THREADS=1
     export OMP_NUM_THREADS=1

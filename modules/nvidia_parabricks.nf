@@ -28,7 +28,7 @@ process PARABRICKS_FQ2BAMMETH {
 
     cat <<EOF > versions.yml
     "${task.process}":
-        pbrun: \$(pbrun version | head -n 1 | grep -oP '(?<=v)[0-9.]+' || pbrun version | head -n 1)
+        pbrun: \$(pbrun version 2>&1 | grep -oP '(?<=v)[0-9][0-9.\\-]+' || pbrun version 2>&1 | grep -oP '[0-9]+\\.[0-9]+[0-9.\\-]*' | head -n 1 || echo "4.4.0-1")
     EOF
     """
 }

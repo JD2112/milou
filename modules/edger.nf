@@ -22,8 +22,12 @@ process EDGER_ANALYSIS {
     script:
     def args = task.ext.args ?: ''
     def coverage_files_list = coverage_files.collect { it.toString() }.join(' ')
-    
     """
+    # Redirect temporary files to local task directory on /data
+    export TMPDIR="\$PWD/tmp"
+    mkdir -p "\$TMPDIR"
+    trap 'rm -rf "\$TMPDIR"' EXIT
+
     Rscript ${projectDir}/bin/edgeR_analysis.R \\
         --design "${design_file}" \\
         --compare "${compare_str}" \\

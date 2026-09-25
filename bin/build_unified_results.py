@@ -13,7 +13,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Build Unified Results for milou Clinical Report")
     parser.add_argument('--run_name', type=str, default="milouRun")
     parser.add_argument('--project_dir', type=str, default=".")
-    parser.add_argument('--pipeline_version', type=str, default="1.2.0")
+    parser.add_argument('--pipeline_version', type=str, default="1.2.1")
     parser.add_argument('--promoter_dist', type=int, default=2000)
     parser.add_argument('--enhancer_dist', type=int, default=10000)
     parser.add_argument('--pvalue_cutoff', type=float, default=0.05)

@@ -181,7 +181,7 @@ workflow {
     ch_bams_for_picard = Channel.empty()
 
     // Input channels
-    if (params.pre_stage_test_data) {
+    if (params.pre_stage_test_data && !params.coverage_files) {
         PRE_STAGE()
         ch_staging_done = PRE_STAGE.out.done
     } else {
@@ -203,7 +203,41 @@ workflow {
     }
     def sample_counter = new java.util.concurrent.atomic.AtomicInteger(phi_mapping.size() + 1)
 
-    if (params.aligned_bams) {
+    if (params.coverage_files) {
+        log.info "Starting directly from extracted coverage files: ${params.coverage_files}"
+        ch_coverage_files = Channel.fromPath(params.coverage_files)
+            .map { file -> 
+                def fname = file.name
+                def original_id = fname.replaceFirst(/(_CpG)?(\.merged)?(\.deduplicated)?(\.bismark)?(\.cov|\.bedGraph)(\.gz)?$/, '')
+                def id = original_id
+                
+                // PHI Intercept: Strip Swedish Personnummer (YYYYMMDD-XXXX or YYMMDD-XXXX)
+                if (original_id ==~ /.*\d{6,8}-\d{4}.*/) {
+                    if (phi_mapping.containsKey(original_id)) {
+                        id = phi_mapping[original_id]
+                    } else {
+                        def new_count = sample_counter.getAndIncrement()
+                        id = "MILOU-SPEC-" + String.format("%03d", new_count)
+                        phi_mapping[original_id] = id
+                        phi_index_file.append("${original_id}\t${id}\n")
+                        log.warn "🔒 PHI DETECTED: Anonymizing sample ID to ${id}. Translation index saved to .secure_phi_index.tsv"
+                    }
+                }
+                def meta = [ id: id, single_end: false, assay_type: params.assay_type ]
+                return [meta, file]
+            }
+
+        ch_methylation_reports = Channel.empty()
+        ch_dedup_reports       = Channel.empty()
+        ch_summary_report      = Channel.empty()
+        ch_qualimap_results    = Channel.empty()
+        ch_bams_for_picard     = Channel.empty()
+        ch_fastqc_reports      = Channel.empty()
+        ch_trimming_reports    = Channel.empty()
+        ch_checksums           = Channel.empty()
+        ch_align_reports       = Channel.empty()
+
+    } else if (params.aligned_bams) {
         log.info "Starting from aligned BAM files: ${params.aligned_bams}"
         // Gate the BAM channel with the staging channel
         ch_aligned_bams = Channel.fromPath(params.aligned_bams)
@@ -403,13 +437,13 @@ workflow {
         ch_coverage_files = ch_validated_coverage.passed.map { meta, cov, status -> [meta, cov] }
 
     } else {
-        error "Either sample_sheet or aligned_bams must be provided"
+        error "Either sample_sheet, aligned_bams, or coverage_files must be provided"
     }
 
     // 2.3 Twist Targeted Capture Metrics (Picard)
     def target_bed = params.methylkit.bed_file ? file(params.methylkit.bed_file) : file("NO_BED")
     def fasta_file = params.genome_fasta ? file(params.genome_fasta) : file("NO_FASTA")
-    if (params.genome_fasta) {
+    if (params.genome_fasta && !params.coverage_files) {
         PICARD_COLLECTHSMETRICS(ch_bams_for_picard, fasta_file, target_bed)
         ch_qualimap_results = ch_qualimap_results.mix(PICARD_COLLECTHSMETRICS.out.metrics)
         ch_versions = ch_versions.mix(PICARD_COLLECTHSMETRICS.out.versions)

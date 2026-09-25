@@ -181,13 +181,13 @@ format:
         \renewcommand{\footrulewidth}{0.4pt}
         \fancyhead[R]{\includegraphics[height=0.6cm]{milou_logo.png}}
         \fancyhead[L]{\small\color{milouslate}\textbf{milou Analysis Report} \;\textbar\; \textit{Sample Cohort Overview}}
-        \fancyfoot[L]{\small\color{gray}milou DNA Methylation Pipeline v1.2.0 \;\textbar\; Run: \texttt{\detokenize{UUID_PLACEHOLDER}}}
+        \fancyfoot[L]{\small\color{gray}milou DNA Methylation Pipeline v1.2.1 \;\textbar\; Run: \texttt{\detokenize{UUID_PLACEHOLDER}}}
         \fancyfoot[R]{\small\color{gray}\textbf{Page \thepage\ of \pageref{LastPage}}}
         \fancypagestyle{plain}{
           \fancyhf{}
           \renewcommand{\headrulewidth}{0pt}
           \renewcommand{\footrulewidth}{0.4pt}
-          \fancyfoot[L]{\small\color{gray}milou DNA Methylation Pipeline v1.2.0 \;\textbar\; Run: \texttt{\detokenize{UUID_PLACEHOLDER}}}
+          \fancyfoot[L]{\small\color{gray}milou DNA Methylation Pipeline v1.2.1 \;\textbar\; Run: \texttt{\detokenize{UUID_PLACEHOLDER}}}
           \fancyfoot[R]{\small\color{gray}\textbf{Page \thepage\ of \pageref{LastPage}}}
         }
         
@@ -319,6 +319,9 @@ kable_report <- function(df, caption = "", note = NULL, font_size = 9) {
     char_cols <- sapply(df, is.character)
     if (any(char_cols)) {
       df[char_cols] <- lapply(df[char_cols], function(x) {
+        x <- gsub("\\\\", "\\\\textbackslash{}", x)
+        x <- gsub("#", "\\\\#", x)
+        x <- gsub("&", "\\\\&", x)
         x <- gsub("_", "\\\\_", x)
         x <- gsub("%", "\\\\%", x)
         x
@@ -366,7 +369,7 @@ n_dmrs <- nrow(dmr)
 # Extract run metadata safely
 r_name <- if (!is.null(run_info$run_name)) run_info$run_name else "milou_run"
 r_date <- if (!is.null(run_info$timestamp)) substr(run_info$timestamp, 1, 10) else as.character(Sys.Date())
-r_ver <- if (!is.null(run_info$version)) run_info$version else "1.2.0"
+r_ver <- if (!is.null(run_info$version)) run_info$version else "1.2.1"
 r_nf <- if (!is.null(run_info$nextflow_version)) run_info$nextflow_version else "25.10.2"
 r_engine <- if (!is.null(run_info$container_engine)) run_info$container_engine else "singularity"
 r_assay <- if (!is.null(run_info$resolved_params$assay_type)) toupper(run_info$resolved_params$assay_type) else "WGBS"
@@ -768,9 +771,18 @@ if (meth_desc != "") {
 
 ```{r software-table, results='asis'}
 if (length(software_versions) > 0) {
+    clean_versions <- sapply(software_versions, function(v) {
+        v_str <- as.character(v)
+        # Extract version pattern (e.g. 4.4.0-1 or 1.2.3) if it contains verbose URL/docs text
+        if (grepl("http|docs|Please visit", v_str, ignore.case = TRUE)) {
+            m <- regmatches(v_str, regexpr("[0-9]+(\\.[0-9]+)+(-[0-9a-zA-Z]+)?", v_str))
+            if (length(m) > 0 && nchar(m) > 0) return(m)
+        }
+        return(v_str)
+    })
     sv_df <- data.frame(
         Tool = names(software_versions),
-        Version = unlist(software_versions)
+        Version = unlist(clean_versions)
     )
     print(kable_report(sv_df, caption = "Analytical Software Traceability", note = "Software packages maintained in containerized environment.", font_size = 8.5))
 }
@@ -780,7 +792,7 @@ if (length(software_versions) > 0) {
 
 ```{r audit-block, results='asis'}
 run_name <- if (!is.null(run_info$run_name)) run_info$run_name else "milou_run"
-run_version <- if (!is.null(run_info$version)) run_info$version else "1.2.0"
+run_version <- if (!is.null(run_info$version)) run_info$version else "1.2.1"
 run_time <- if (!is.null(run_info$timestamp)) run_info$timestamp else Sys.time()
 run_files <- if (!is.null(run_info$files_processed)) run_info$files_processed else 0
 run_commit <- if (!is.null(run_info$commit_hash)) run_info$commit_hash else "Not available"

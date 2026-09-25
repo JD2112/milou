@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2026-09-25
+
+### Fixed
+- **EdgeR & MethylKit Input Handling**: Updated R scripts to correctly handle filtering and contrast definitions.
+- **NVIDIA Parabricks Module Optimization**: Updated resource limits and GPU profiles for Clara Parabricks alignment & variant/methylation call workflows.
+- **Documentation & Benchmarks**: Added reference benchmarking logs and target metrics documentation (`docs/benchmarking_table3_reference.md`).
+
 ## [1.2.0] - 2026-09-04
 
 ### Added

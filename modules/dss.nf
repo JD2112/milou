@@ -19,6 +19,16 @@ process DSS_ANALYSIS {
     def coverage_files_list = coverage_files.collect { it.toString() }.join(' ')
     
     """
+    # Redirect temporary files to local task directory on /data
+    export TMPDIR="\$PWD/tmp"
+    mkdir -p "\$TMPDIR"
+    trap 'rm -rf "\$TMPDIR"' EXIT
+
+    # Force re-run for script updates
+    export OPENBLAS_NUM_THREADS=1
+    export OMP_NUM_THREADS=1
+    export MKL_NUM_THREADS=1
+
     Rscript ${projectDir}/bin/dss_analysis.R \\
         --design "${design_file}" \\
         --compare "${compare_str}" \\

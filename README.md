@@ -15,8 +15,6 @@ A core scientific breakthrough of milou is its **Multi-Method Differential Methy
 > [!NOTE]
 > For a deeper look at our design goals, competitive positioning, and scientific rationale, please see our [Project Philosophy](PHILOSOPHY.md) and our [Benchmarking Strategy](BENCHMARKING.md).
 
-
-
 ## 2. Key Features
 
 - **Dual-Engine Execution (GPU + CPU)**: Flexible support for ultra-fast GPU-accelerated processing via NVIDIA Clara Parabricks (`fq2bam_meth` + `MethylDackel`) and standard CPU-based workflows (Bismark with parallel FastQ chunking), achieving bitwise concordance across platforms.
@@ -28,8 +26,6 @@ A core scientific breakthrough of milou is its **Multi-Method Differential Methy
 - **Biological Pathway Integration**: Automated functional profiling including Gene Ontology (GO) and KEGG pathway mapping with automated Pathview overlay diagrams.
 - **Strict Clinical Governance & Determinism**: Cryptographic SHA256 input checksumming, HIPAA-compliant PHI sanitization, automated conversion efficiency QC (Lambda spike-in), and bitwise statistical determinism (`set.seed(42)`).
 - **FAIR Open Science Archive (Zenodo)**: Complete execution reports, timelines, MultiQC dashboards, and benchmark assets are permanently deposited on Zenodo at **DOI: [10.5281/zenodo.22326688](https://doi.org/10.5281/zenodo.22326688)**.
-
-
 
 ## 3. Pipeline Architecture
 
@@ -50,14 +46,12 @@ A core scientific breakthrough of milou is its **Multi-Method Differential Methy
 
 ## 4. Requirements & Installation
 
-- **Nextflow**: Version `>= 21.10.3` (DSL2 compliant)
+- **Nextflow**: Version `>= 21.10.3` (tested on 25.10.5)
 - **Container Engine**: [Docker](https://docs.docker.com/engine/install/) or [Singularity](https://singularity-tutorial.github.io/01-installation/) (all images pinned with immutable SHA256 digests)
 - **Java**: JRE `>= 11` (or OpenJDK 17)
 - **Hardware**:
   - **CPU Track**: Minimum 16 CPU cores and 64 GB RAM recommended for targeted panels; $\ge$ 128 GB RAM recommended for human whole-genome sequencing (WGBS / EM-seq).
   - **GPU Track**: NVIDIA CUDA-capable GPU with $\ge$ 16 GB VRAM (e.g., A10, A30, A100, L40S).
-
-
 
 ## 5. Quick Start
 
@@ -96,30 +90,37 @@ nextflow run JD2112/milou \
     --outdir results_cpu
 ```
 
+## 6. Pre-Configured Benchmark Profiles & Public Datasets
 
+milou natively integrates an automated data-staging subworkflow (`PRE_STAGE`) that streams and verifies raw FASTQ reads and reference genomes directly from public archives (ENA, NCBI SRA) via URL-parameterized manifests, eliminating manual pre-downloading overhead.
 
-## 6. Pre-Configured Benchmark Profiles
+### Evaluated Public Datasets
 
-milou includes built-in test profiles for rapid execution, validation, and reproduction of published benchmarks:
+| Modality | Public Accession / Source | Reference Genome | Cohort & Experimental Design | Pre-Configured Profiles |
+| :--- | :---: | :---: | :--- | :--- |
+| **Targeted Hybrid-Capture**<br>(Twist Human Methylome) | [ENA PRJEB61787](https://www.ebi.ac.uk/ena/browser/view/PRJEB61787)<br>*(Krumpolec et al., 2024)* | `hg19` / `GRCh37` | 24 samples: Maternal peripheral blood (12) and umbilical cord blood (12); vaginal delivery vs. caesarean section | `-profile twist_minimal_cpu`<br>`-profile twist_minimal_gpu`<br>`-profile twist_replicate_article_A_cpu`<br>`-profile twist_replicate_article_B_cpu`<br>`-profile twist_full_cpu` |
+| **Enzymatic Methyl-seq**<br>(Whole-Genome EM-seq) | [NCBI SRA PRJNA1392513](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA1392513) | `hg38` / `GRCh38` | 12 samples: Human respiratory cohort (4 asthmatic, 4 atopic, 4 healthy controls; all-vs-all contrast design) | `-profile test_emseq_cpu`<br>`-profile test_emseq_gpu` |
+| **Bisulfite Sequencing**<br>(Full-Depth WGBS) | [NCBI SRA PRJNA476128](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA476128)<br>*(Fetahu et al., 2019)* | `hg38` / `GRCh38` | 45 samples (6-sample benchmark subset): Postmortem human brain tissue (wild-type vs. early-onset AD vs. late-onset AD) | `-profile test_bisulfite_cpu`<br>`-profile test_bisulfite_gpu` |
+
+### Rapid Execution Commands
+
+You can execute any of these benchmark cohorts directly from GitHub. `milou` will automatically download the remote FASTQs, test gzip integrity, stage reference assets, and execute the complete analytical cascade:
 
 ```bash
-# 1. Human EM-seq whole-genome benchmark (12 samples: asthmatic, atopic, healthy)
-nextflow run JD2112/milou -profile em_seq_cpu,singularity
-nextflow run JD2112/milou -profile em_seq_gpu,singularity,gpu
+# 1. Minimal Targeted Capture Sanity Test (6 samples, hg19)
+nextflow run JD2112/milou -r main -profile twist_minimal_cpu,singularity --outdir ./results_twist_min
 
-# 2. Human WGBS/Bisulfite benchmark (PRJNA476128)
-nextflow run JD2112/milou -profile bs_seq_cpu,singularity
-nextflow run JD2112/milou -profile bs_seq_gpu,singularity,gpu
+# 2. Human Whole-Genome EM-seq Benchmark (12 samples, hg38)
+nextflow run JD2112/milou -r main -profile test_emseq_cpu,singularity --outdir ./results_emseq_cpu
+nextflow run JD2112/milou -r main -profile test_emseq_gpu,singularity,gpu --outdir ./results_emseq_gpu
 
-# 3. Targeted Hybrid-Capture replication cohort (24 samples)
-nextflow run JD2112/milou -profile twist_replicate_article_A_cpu,singularity
-nextflow run JD2112/milou -profile twist_replicate_article_A_gpu,singularity,gpu
+# 3. Whole-Genome Bisulfite Sequencing Benchmark (6 samples, hg38)
+nextflow run JD2112/milou -r main -profile test_bisulfite_cpu,singularity --outdir ./results_wgbs_cpu
+nextflow run JD2112/milou -r main -profile test_bisulfite_gpu,singularity,gpu --outdir ./results_wgbs_gpu
 
-# 4. Minimal lightweight sanity test
-nextflow run JD2112/milou -profile test_local,singularity
+# 4. Twist Full Clinical Cohort Replication (Cohort A maternal blood: 12 samples, hg19)
+nextflow run JD2112/milou -r main -profile twist_replicate_article_A_cpu,singularity --outdir ./results_twist_A
 ```
-
-
 
 ## 7. Key Parameter Reference
 
@@ -141,26 +142,25 @@ nextflow run JD2112/milou -profile test_local,singularity
 
 > For the exhaustive parameter specification, visit the [Online Documentation](https://jd2112.github.io/milou/parameters/).
 
-
-
 ## 8. Output Directory Structure
 
 Each pipeline run organizes harmonized results into standard directories:
 ```
 results/
+├── report/                    # Quarto diagnostic summary reports
+│   ├── milou_report.html      # Interactive clinical summary dashboard
+│   └── milou_report.pdf       # Publication-ready diagnostic vector PDF
 ├── multiqc/                   # MultiQC aggregated quality control report
 ├── pipeline_info/             # Nextflow execution report, timeline, trace, and DAG
-├── clinical_reporting/        # Quarto HTML & PDF diagnostic summary reports
 ├── unified_layer/             # Cross-method consensus tables with calculated π-values
 │   ├── Unified_Candidate_Genes_Ranked.csv
 │   └── MultiMethod_Consensus_Voting_Matrix.csv
-├── dss/                       # DSS differential methylation results (CpGs & DMRs)
-├── edger/                     # edgeR dispersion-shrinkage differential results
-├── methylkit/                 # methylKit logistic regression results & annotations
+├── differential_methylation/  # Statistical differential calling outputs
+│   ├── dss_analysis/          # DSS Bayesian spatial DMRs & DMLs
+│   ├── edger_analysis/        # edgeR GLM quasi-likelihood outputs
+│   └── methylkit_analysis/    # methylKit logistic regression results & annotations
 └── enrichment/                # clusterProfiler GO, KEGG Pathview, and DisGeNET outputs
 ```
-
-
 
 ## 9. Citation & Reproducibility
 
@@ -169,8 +169,6 @@ If you use milou in your research, please cite:
 > **Das, J., et al. (2026).** *milou: An open-source, reproducible Nextflow framework for high-throughput DNA methylation profiling with multi-method consensus scoring and automated reporting.*   
 > **Software Pipeline Archive:** [https://doi.org/10.5281/zenodo.14204260](https://doi.org/10.5281/zenodo.14204260)  
 > **Benchmark Data Archive:** [https://doi.org/10.5281/zenodo.22326688](https://doi.org/10.5281/zenodo.22326688)
-
-
 
 ## 10. License & Acknowledgements
 

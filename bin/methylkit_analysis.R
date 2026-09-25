@@ -121,7 +121,7 @@ for (i in seq_along(coverage_files)) {
         
         if (grepl("^track", first_line)) {
             cat(paste("Detected track line in", f, "- creating temporary cleaned file.\n"))
-            tmp_f <- tempfile(pattern = basename(f))
+            tmp_f <- tempfile(pattern = basename(f), tmpdir = ".")
             if (is_gz) {
                 lines <- readLines(gzfile(f))
                 writeLines(lines[-1], tmp_f)

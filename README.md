@@ -1,4 +1,7 @@
-![](docs/images/milou_logo.png)
+<p align="center">
+  <img src="docs/images/milou_logo.png" width="50%" alt="milou logo">
+</p>
+
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14204260.svg)](https://doi.org/10.5281/zenodo.14204260)
 [![GitBook Docs](https://img.shields.io/badge/docs-GitBook-blue?logo=gitbook)](https://jyotirmoys-organization.gitbook.io/milou)
@@ -14,6 +17,11 @@ A core scientific breakthrough of milou is its **Multi-Method Differential Methy
 
 > [!NOTE]
 > For a deeper look at our design goals, competitive positioning, and scientific rationale, please see our [Project Philosophy](PHILOSOPHY.md) and our [Benchmarking Strategy](BENCHMARKING.md).
+
+
+<p align="center">
+  <img src="docs/images/milou.png" width="100%" alt="milou pipeline">
+</p>
 
 ## 2. Key Features
 

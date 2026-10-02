@@ -6,10 +6,16 @@ hide:
 
 # Introduction
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14204260.svg)](https://doi.org/10.5281/zenodo.14204260)
-[![GitBook Docs](https://img.shields.io/badge/docs-GitBook-blue?logo=gitbook)](https://jyotirmoys-organization.gitbook.io/milou)
-[![GitHub Invite Collaborators](https://img.shields.io/badge/Invite-Collaborators-blue?style=for-the-badge&logo=github)](https://github.com/JD2112/milou/settings/access)
-[![wakatime](https://wakatime.com/badge/user/fe95275f-909a-4147-a45d-624981173898/project/a44415f0-a274-4c3b-a59a-f8e1067c0fc1.svg)](https://wakatime.com/badge/user/fe95275f-909a-4147-a45d-624981173898/project/a44415f0-a274-4c3b-a59a-f8e1067c0fc1)
+<p align="center">
+  <a href="https://www.nextflow.io/"><img src="https://img.shields.io/badge/Nextflow-DSL2%20%E2%89%A521.10.3-23aa62?style=flat-square&logo=nextflow&logoColor=white" alt="Nextflow"></a>
+  <a href="https://doi.org/10.5281/zenodo.14204260"><img src="https://img.shields.io/badge/DOI-10.5281%2Fzenodo.14204260-1073c8?style=flat-square&logo=zenodo&logoColor=white" alt="Zenodo DOI"></a>
+  <a href="https://jd2112.github.io/milou/"><img src="https://img.shields.io/badge/Docs-GitHub%20Pages-526CFE?style=flat-square&logo=materialformkdocs&logoColor=white" alt="MkDocs Documentation"></a>
+  <a href="https://www.nvidia.com/en-us/clara/genomics/"><img src="https://img.shields.io/badge/GPU-NVIDIA%20Parabricks-76B900?style=flat-square&logo=nvidia&logoColor=white" alt="NVIDIA Clara Parabricks"></a>
+  <a href="https://hub.docker.com/"><img src="https://img.shields.io/badge/Docker-supported-2496ED?style=flat-square&logo=docker&logoColor=white" alt="Docker"></a>
+  <a href="https://docs.sylabs.io/guides/latest/user-guide/"><img src="https://img.shields.io/badge/Singularity-supported-1D4ED8?style=flat-square" alt="Singularity"></a>
+  <a href="https://docs.conda.io/"><img src="https://img.shields.io/badge/Conda-supported-44A833?style=flat-square&logo=anaconda&logoColor=white" alt="Conda"></a>
+  <a href="https://slurm.schedmd.com/"><img src="https://img.shields.io/badge/Slurm-HPC%20Ready-00599C?style=flat-square" alt="Slurm"></a>
+</p>
 
 <div class="grid-container" markdown="1">
 

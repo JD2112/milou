@@ -3,10 +3,21 @@
 </p>
 
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14204260.svg)](https://doi.org/10.5281/zenodo.14204260)
-[![GitBook Docs](https://img.shields.io/badge/docs-GitBook-blue?logo=gitbook)](https://jyotirmoys-organization.gitbook.io/milou)
-[![GitHub Invite Collaborators](https://img.shields.io/badge/Invite-Collaborators-blue?style=for-the-badge&logo=github)](https://github.com/JD2112/milou/settings/access)
-[![wakatime](https://wakatime.com/badge/user/fe95275f-909a-4147-a45d-624981173898/project/a44415f0-a274-4c3b-a59a-f8e1067c0fc1.svg)](https://wakatime.com/badge/user/fe95275f-909a-4147-a45d-624981173898/project/a44415f0-a274-4c3b-a59a-f8e1067c0fc1)
+<p align="center">
+  <a href="https://www.nextflow.io/"><img src="https://img.shields.io/badge/Nextflow-DSL2%20%E2%89%A521.10.3-23aa62?style=flat-square&logo=nextflow&logoColor=white" alt="Nextflow"></a>
+  <a href="https://doi.org/10.5281/zenodo.14204260"><img src="https://img.shields.io/badge/DOI-10.5281%2Fzenodo.14204260-1073c8?style=flat-square&logo=zenodo&logoColor=white" alt="Zenodo DOI"></a>
+  <a href="https://jd2112.github.io/milou/"><img src="https://img.shields.io/badge/Docs-GitHub%20Pages-526CFE?style=flat-square&logo=materialformkdocs&logoColor=white" alt="MkDocs Documentation"></a>
+  <a href="https://www.nvidia.com/en-us/clara/genomics/"><img src="https://img.shields.io/badge/GPU-NVIDIA%20Parabricks-76B900?style=flat-square&logo=nvidia&logoColor=white" alt="NVIDIA Clara Parabricks"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="MIT License"></a>
+</p>
+
+<p align="center">
+  <a href="https://hub.docker.com/"><img src="https://img.shields.io/badge/Docker-supported-2496ED?style=flat-square&logo=docker&logoColor=white" alt="Docker"></a>
+  <a href="https://docs.sylabs.io/guides/latest/user-guide/"><img src="https://img.shields.io/badge/Singularity-supported-1D4ED8?style=flat-square" alt="Singularity"></a>
+  <a href="https://docs.conda.io/"><img src="https://img.shields.io/badge/Conda-supported-44A833?style=flat-square&logo=anaconda&logoColor=white" alt="Conda"></a>
+  <a href="https://slurm.schedmd.com/"><img src="https://img.shields.io/badge/Slurm-HPC%20Ready-00599C?style=flat-square" alt="Slurm"></a>
+</p>
+
 
 
 ## 1. Overview
@@ -27,8 +38,7 @@ A core scientific breakthrough of milou is its **Multi-Method Differential Methy
 
 - **Dual-Engine Execution (GPU + CPU)**: Flexible support for ultra-fast GPU-accelerated processing via NVIDIA Clara Parabricks (`fq2bam_meth` + `MethylDackel`) and standard CPU-based workflows (Bismark with parallel FastQ chunking), achieving bitwise concordance across platforms.
 - **Versatile Conversion Chemistry**: Native support for Enzymatic Methyl-seq (EM-seq), targeted hybrid capture (e.g., Twist Human Methylome), and standard WGBS bisulfite conversion.
-- **Multi-Method Consensus Layer ($\pi$-Value)**: Directly addresses the notorious caller discordance between beta-binomial models (DSS), negative binomial generalized linear models (edgeR), and logistic regression (methylKit) by ranking candidate genes via:
-  $$\pi_g = \overline{|\log_2(\text{FC})_g|} \times (-\log_{10}(P_{\min,g}))$$
+- **Multi-Method Consensus Layer ($\pi$-Value)**: Directly addresses the notorious caller discordance between beta-binomial models (DSS), negative binomial generalized linear models (edgeR), and logistic regression (methylKit) by ranking candidate genes via composite $\pi$-score: $\pi_g = \overline{|\log_2(\text{FC})_g|} \times (-\log_{10}(P_{\min,g}))$.
 - **Automated Clinical & Research Quarto Reports**: Interactive HTML dashboards (with searchable `DT::datatable`, TSV/Excel exports, and locus zoom plots) and publication-ready vector PDFs produced automatically via Quarto.
 - **Genomic & Disease Annotation**: Direct integration with gnomAD population variant frequencies, OMIM morbid maps, and localized DisGeNET disease descriptors.
 - **Biological Pathway Integration**: Automated functional profiling including Gene Ontology (GO) and KEGG pathway mapping with automated Pathview overlay diagrams.
@@ -152,23 +162,144 @@ nextflow run JD2112/milou -r main -profile twist_replicate_article_A_cpu,singula
 
 ## 8. Output Directory Structure
 
-Each pipeline run organizes harmonized results into standard directories:
+Each pipeline run organizes harmonized results into modular directories depending on the execution track (GPU via NVIDIA Clara Parabricks or CPU via Bismark):
+
+| Directory | Description |
+| :--- | :--- |
+| `read_processing/` | Quality control (FastQC), adapter trimming (Trim Galore), and sync checks |
+| `parabricks_analysis/` | *(GPU track)* Clara Parabricks alignment (`fq2bam_meth`), indexing, and MethylDackel |
+| `bismark_analysis/` | *(CPU track)* Bismark directional alignment, deduplication, and methylation extractor |
+| `prepare_genome/` | *(CPU track)* In silico bisulfite genome conversion |
+| `conversion_qc/` | Automated conversion efficiency check (`conversion_status.txt`) |
+| `differential_methylation/` | Caller-specific statistics (`dss_analysis/`, `edger_analysis/`, `methylkit_analysis/`) |
+| `result_analysis/` | Method-specific feature annotation, GO/KEGG functional profiling, and post-processing |
+| `unified_layer/` | Cross-method consensus voting matrix and ranked $\pi$-score candidates |
+| `clinical_reporting/` | Clinical annotation (OMIM, gnomAD), DisGeNET disease enrichment, and locus plots |
+| `report/` | Automated Quarto summary reports (`milou_report.html` and publication-ready `.pdf`) |
+| `multiqc/` | Aggregated MultiQC quality control report (`milou-Analysis-Report_multiqc_report.html`) |
+| `pipeline_info/` | Nextflow execution telemetry (resource utilization trace, timeline, HTML DAG) |
+
+<details>
+<summary><b>🔍 Click to expand GPU Output Directory Tree (<code>results_test_emseq_gpu/</code>)</b></summary>
+
+```text
+results_test_emseq_gpu/
+├── clinical_reporting/
+│   ├── clinical_annotation/
+│   ├── disease_enrichment/
+│   ├── dmr_detail_plot/
+│   ├── go_enrichment/
+│   ├── kegg_enrichment/
+│   ├── pathview_plot/
+│   └── pca_plot/
+├── conversion_qc/
+│   └── conversion_status.txt
+├── differential_methylation/
+│   ├── dss_analysis/
+│   ├── edger_analysis/
+│   └── methylkit_analysis/
+├── multiqc/
+│   ├── milou-Analysis-Report_multiqc_report_data/
+│   ├── milou-Analysis-Report_multiqc_report.html
+│   ├── multiqc.log
+│   └── versions.yml
+├── parabricks_analysis/
+│   ├── bwameth_index/
+│   ├── methyldackel_extract/
+│   ├── parabricks_fq2bammeth/
+│   ├── qualimap/
+│   ├── samtools_faidx/
+│   └── samtools_index/
+├── pipeline_info/
+│   ├── execution_report.html
+│   ├── execution_timeline.html
+│   ├── execution_trace.txt
+│   └── pipeline_dag.html
+├── read_processing/
+│   ├── checksum_verify/
+│   ├── fastqc/
+│   ├── trim_galore/
+│   └── validate_sync/
+├── report/
+│   ├── milou_report.html
+│   └── milou_report.pdf
+├── result_analysis/
+│   ├── annotate_results_dss/
+│   ├── annotate_results_edger/
+│   ├── enrichment_analysis_dss/
+│   ├── enrichment_analysis_edger/
+│   ├── enrichment_analysis_methylkit/
+│   ├── post_processing_dss/
+│   ├── post_processing_edger/
+│   └── post_processing_methylkit/
+└── unified_layer/
+    └── results_dir/
 ```
-results/
-├── report/                    # Quarto diagnostic summary reports
-│   ├── milou_report.html      # Interactive clinical summary dashboard
-│   └── milou_report.pdf       # Publication-ready diagnostic vector PDF
-├── multiqc/                   # MultiQC aggregated quality control report
-├── pipeline_info/             # Nextflow execution report, timeline, trace, and DAG
-├── unified_layer/             # Cross-method consensus tables with calculated π-values
-│   ├── Unified_Candidate_Genes_Ranked.csv
-│   └── MultiMethod_Consensus_Voting_Matrix.csv
-├── differential_methylation/  # Statistical differential calling outputs
-│   ├── dss_analysis/          # DSS Bayesian spatial DMRs & DMLs
-│   ├── edger_analysis/        # edgeR GLM quasi-likelihood outputs
-│   └── methylkit_analysis/    # methylKit logistic regression results & annotations
-└── enrichment/                # clusterProfiler GO, KEGG Pathview, and DisGeNET outputs
+
+</details>
+
+<details>
+<summary><b>🔍 Click to expand CPU Output Directory Tree (<code>results_test_emseq_cpu/</code>)</b></summary>
+
+```text
+results_test_emseq_cpu/
+├── bismark_analysis/
+│   ├── bismark_align/
+│   ├── bismark_deduplicate/
+│   ├── bismark_methylation_extractor/
+│   ├── bismark_report/
+│   ├── qualimap/
+│   ├── samtools_index/
+│   ├── samtools_merge/
+│   └── samtools_sort/
+├── clinical_reporting/
+│   ├── clinical_annotation/
+│   ├── disease_enrichment/
+│   ├── dmr_detail_plot/
+│   ├── go_enrichment/
+│   ├── kegg_enrichment/
+│   ├── pathview_plot/
+│   └── pca_plot/
+├── conversion_qc/
+│   └── conversion_status.txt
+├── differential_methylation/
+│   ├── dss_analysis/
+│   ├── edger_analysis/
+│   └── methylkit_analysis/
+├── multiqc/
+│   ├── milou-Analysis-Report_multiqc_report_data/
+│   ├── milou-Analysis-Report_multiqc_report.html
+│   ├── multiqc.log
+│   └── versions.yml
+├── pipeline_info/
+│   ├── execution_report.html
+│   ├── execution_timeline.html
+│   ├── execution_trace.txt
+│   └── pipeline_dag.html
+├── prepare_genome/
+│   └── bismark_genome_preparation/
+├── read_processing/
+│   ├── checksum_verify/
+│   ├── fastqc/
+│   ├── trim_galore/
+│   └── validate_sync/
+├── report/
+│   ├── milou_report.html
+│   └── milou_report.pdf
+├── result_analysis/
+│   ├── annotate_results_dss/
+│   ├── annotate_results_edger/
+│   ├── enrichment_analysis_dss/
+│   ├── enrichment_analysis_edger/
+│   ├── enrichment_analysis_methylkit/
+│   ├── post_processing_dss/
+│   ├── post_processing_edger/
+│   └── post_processing_methylkit/
+└── unified_layer/
+    └── results_dir/
 ```
+
+</details>
 
 ## 9. Citation & Reproducibility
 

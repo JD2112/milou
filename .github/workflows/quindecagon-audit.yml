@@ -1,0 +1,20 @@
+name: Security & Compliance Audit
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  quindecagon-audit:
+    name: 'Quindecagon Audit'
+    uses: JD2112/quindecagon/.github/workflows/pipeline-audit.yml@main
+    permissions:
+      contents: write
+    with:
+      deploy-badges: true

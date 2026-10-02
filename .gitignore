@@ -63,3 +63,5 @@ __pycache__/
 debugging*
 test_results/
 project_tracker.yaml
+/.quarto/
+**/*.quarto_ipynb

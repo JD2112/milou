@@ -17,6 +17,16 @@ hide:
   <a href="https://slurm.schedmd.com/"><img src="https://img.shields.io/badge/Slurm-HPC%20Ready-00599C?style=flat-square" alt="Slurm"></a>
 </p>
 
+<p align="center">
+  <a href="https://github.com/JD2112/quindecagon"><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/JD2112/milou/badges/quindecagon.json" alt="quindecagon"></a>
+  <a href="https://nf-co.re"><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/JD2112/milou/badges/nfcore_lint.json" alt="nf-core lint"></a>
+  <a href="https://github.com/anchore/syft"><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/JD2112/milou/badges/syft.json" alt="SBOM"></a>
+  <a href="https://github.com/gitleaks/gitleaks"><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/JD2112/milou/badges/secrets.json" alt="secrets"></a>
+  <a href="https://github.com/psf/black"><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/JD2112/milou/badges/black.json" alt="code style"></a>
+  <a href="https://flake8.pycqa.org"><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/JD2112/milou/badges/flake8.json" alt="flake8"></a>
+  <a href="https://github.com/r-lib/lintr"><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/JD2112/milou/badges/r_audit.json" alt="R audit"></a>
+</p>
+
 <div class="grid-container" markdown="1">
 
 <div class="main-content" markdown="1">

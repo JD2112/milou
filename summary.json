@@ -1,0 +1,10 @@
+{
+  "secrets": 0,
+  "flake8_issues": 171,
+  "black_clean": false,
+  "r_files": 13,
+  "nfcore": {
+    "error": "Command 'nextflow config -flat .' returned non-zero error code '1':\n[red]> Downloading nextflow dependencies. It may require a few seconds, please wait .. \r\u001b[K\nError resources.config:76:5: If statements cannot be mixed with config statements\n\u2502  85 |     } else {\n\u2502  86 |         // Safe default limit when not running inside a SLURM allocati\n\u2502  87 |         cpus = 16\n\u2502  88 |         memory = '240 GB'\n\u2570  89 |     }\n\n\nERROR ~ Config parsing failed\n\n\n"
+  },
+  "sbom": "generated"
+}

@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1,
+  "label": "nf-core lint",
+  "message": "inspected",
+  "color": "yellow"
+}

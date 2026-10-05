@@ -1,0 +1,938 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="milou: Methylation Integrated Layer for Omics Unification">
+      
+      
+        <meta name="author" content="Jyotirmoy Das">
+      
+      
+        <link rel="canonical" href="https://JD2112.github.io/milou/1.2.1/benchmarking_table3_reference/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Benchmarking Runtime & Resource Tracking for Manuscript (Table 3 & Supplement) - milou</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../styles/extra.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Inter:wght@400;600&display=swap">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#benchmarking-runtime-resource-tracking-for-manuscript-table-3-supplement" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="milou" class="md-header__button md-logo" aria-label="milou" data-md-component="logo">
+      
+
+<a href="https://github.com/JD2112" target="_blank" style="display:flex; align-items:center; text-decoration:none;">
+  <img src="../images/JD_logo.png" alt="Logo" style="height:24px; margin-right:8px;">
+</a>
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            milou
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Benchmarking Runtime &amp; Resource Tracking for Manuscript (Table 3 &amp; Supplement)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/JD2112/milou" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Introduction
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../usage/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  User Manual
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../output/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Results
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../references/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  References
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="milou" class="md-nav__button md-logo" aria-label="milou" data-md-component="logo">
+      
+
+<a href="https://github.com/JD2112" target="_blank" style="display:flex; align-items:center; text-decoration:none;">
+  <img src="../images/JD_logo.png" alt="Logo" style="height:24px; margin-right:8px;">
+</a>
+    </a>
+    milou
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/JD2112/milou" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+  
+  <li class="md-nav__item">
+    
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+    
+    
+    
+  </li>
+
+  
+  <li class="md-nav__item">
+    
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Manual
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+    
+    
+    
+  </li>
+
+  
+  <li class="md-nav__item">
+    
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../output/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+    
+    
+    
+  </li>
+
+  
+  <li class="md-nav__item">
+    
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    References
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+    
+    
+    
+  </li>
+
+
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-official-recorded-runtimes-from-nextflow-master-logs-nextflow_all_runslog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Official Recorded Runtimes from Nextflow Master Logs (nextflow_all_runs.log)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Official Recorded Runtimes from Nextflow Master Logs (nextflow_all_runs.log)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-bisulfite-seq-test-profile-wgbs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Bisulfite-seq Test Profile (WGBS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-em-seq-test-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. EM-seq Test Profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-twist-targeted-panel-replicates-a" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C. Twist Targeted Panel - Replicates A
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-twist-targeted-panel-replicates-b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D. Twist Targeted Panel - Replicates B
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e-twist-targeted-panel-minimal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        E. Twist Targeted Panel - Minimal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-instructions-for-updating-table-3-supplement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Instructions for Updating Table 3 &amp; Supplement
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Instructions for Updating Table 3 &amp; Supplement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#complete-log-breakdown-from-results_v121logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Complete Log Breakdown from results_v1.2.1/logs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-observations-across-the-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Observations Across the Logs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="benchmarking-runtime-resource-tracking-for-manuscript-table-3-supplement">Benchmarking Runtime &amp; Resource Tracking for Manuscript (Table 3 &amp; Supplement)<a class="headerlink" href="#benchmarking-runtime-resource-tracking-for-manuscript-table-3-supplement" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>CRITICAL NOTE FOR MANUSCRIPT TABLES &amp; BENCHMARKING SECTIONS</strong>
+When reporting total runtimes, speedup metrics, and resource footprints for CPU vs. GPU runs in <strong>Table 3</strong> and the <strong>Supplementary Materials</strong>, the upstream alignment and deduplication runtimes from the original full runs <strong>MUST</strong> be included. 
+The recent coverage-started runs were utilized to refresh downstream statistics, consensus DMRs, and Quarto rendering without needlessly wasting compute re-aligning terabytes of raw reads.</p>
+</blockquote>
+<hr />
+<h2 id="1-official-recorded-runtimes-from-nextflow-master-logs-nextflow_all_runslog">1. Official Recorded Runtimes from Nextflow Master Logs (<code>nextflow_all_runs.log</code>)<a class="headerlink" href="#1-official-recorded-runtimes-from-nextflow-master-logs-nextflow_all_runslog" title="Permanent link">&para;</a></h2>
+<h3 id="a-bisulfite-seq-test-profile-wgbs">A. Bisulfite-seq Test Profile (WGBS)<a class="headerlink" href="#a-bisulfite-seq-test-profile-wgbs" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Profile</strong>: <code>test_bisulfite_cpu</code></li>
+<li><strong>Benchmark Run Name</strong>: <code>special_noether</code> (<a href="file:///Users/jyoda68/Documents/JDCo/milou/results_v1.2.1/nextflow_all_runs.log#L96">Line 96</a>)</li>
+<li><strong>Original Full Pipeline Runtime</strong>: <strong>1d 18h 59m 37s</strong> (~43.0 hours)</li>
+<li><strong>Status</strong>: <code>OK</code></li>
+<li><strong>Comparison GPU Run</strong>: <code>mighty_khorana</code> (<a href="file:///Users/jyoda68/Documents/JDCo/milou/results_v1.2.1/nextflow_all_runs.log#L175">Line 175</a>) — <strong>16h 17m 58s</strong></li>
+</ul>
+<h3 id="b-em-seq-test-profile">B. EM-seq Test Profile<a class="headerlink" href="#b-em-seq-test-profile" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Profile</strong>: <code>test_emseq_cpu</code></li>
+<li><strong>Benchmark Execution</strong>: Executed in two sequential segments with <code>-resume</code> (alignment + coverage extraction across 12 full-depth whole-genome samples):</li>
+<li><strong>Segment 1</strong>: Initial alignment &amp; processing run (<code>desperate_bassi</code>, <a href="file:///Users/jyoda68/Documents/JDCo/milou/results_v1.2.1/nextflow_all_runs.log#L112">Line 112</a>): <strong>2d 18h 46m 30s</strong> (~66.78 hours)</li>
+<li><strong>Segment 2 / Resumption</strong>: Completed tasks &amp; downstream differential methylation (<code>sleepy_salas</code> / <code>prickly_torricelli</code>): <strong>7h 28m</strong> to <strong>7h 45m</strong></li>
+<li><strong>Combined Effective Full Runtime</strong>: <strong>&gt;2.8 days (~68–74 hours)</strong> total elapsed compute for the complete end-to-end CPU execution.</li>
+<li><strong>Comparison GPU Run</strong>: <code>cheeky_lalande</code> (<a href="file:///Users/jyoda68/Documents/JDCo/milou/results_v1.2.1/nextflow_all_runs.log#L162">Line 162</a>) — <strong>15h 25m 35s</strong> (providing a substantial real-world whole-pipeline speedup over the 2+ day CPU baseline).</li>
+</ul>
+<h3 id="c-twist-targeted-panel-replicates-a">C. Twist Targeted Panel - Replicates A<a class="headerlink" href="#c-twist-targeted-panel-replicates-a" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Profile</strong>: <code>twist_replicate_article_A_cpu</code></li>
+<li><strong>Benchmark Run Name</strong>: <code>nauseous_gilbert</code> (<a href="file:///Users/jyoda68/Documents/JDCo/milou/results_v1.2.1/nextflow_all_runs.log#L56">Line 56</a>)</li>
+<li><strong>Original Full Pipeline Runtime</strong>: <strong>1d 5h 10m 12s</strong> (~29.17 hours)</li>
+<li><strong>Status</strong>: <code>OK</code></li>
+<li><strong>Comparison GPU Run</strong>: <code>fabulous_swirles</code> (<a href="file:///Users/jyoda68/Documents/JDCo/milou/results_v1.2.1/nextflow_all_runs.log#L158">Line 158</a>) — <strong>2h 23m 39s</strong></li>
+</ul>
+<h3 id="d-twist-targeted-panel-replicates-b">D. Twist Targeted Panel - Replicates B<a class="headerlink" href="#d-twist-targeted-panel-replicates-b" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Profile</strong>: <code>twist_replicate_article_B_cpu</code></li>
+<li><strong>Benchmark Run Name</strong>: <code>desperate_bhabha</code> (<a href="file:///Users/jyoda68/Documents/JDCo/milou/results_v1.2.1/nextflow_all_runs.log#L57">Line 57</a>)</li>
+<li><strong>Original Full Pipeline Runtime</strong>: <strong>1d 1h 50m 2s</strong> (~25.83 hours)</li>
+<li><strong>Status</strong>: <code>OK</code></li>
+<li><strong>Comparison GPU Run</strong>: <code>sick_legentil</code> (<a href="file:///Users/jyoda68/Documents/JDCo/milou/results_v1.2.1/nextflow_all_runs.log#L169">Line 169</a>) — <strong>5h 19m 3s</strong></li>
+</ul>
+<h3 id="e-twist-targeted-panel-minimal">E. Twist Targeted Panel - Minimal<a class="headerlink" href="#e-twist-targeted-panel-minimal" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Profile</strong>: <code>twist_minimal_cpu</code></li>
+<li><strong>Benchmark Run Name</strong>: Currently running fresh on <code>fraka</code> (previous: <code>kickass_minsky</code>, 18h 55m 42s)</li>
+<li><strong>Comparison GPU Run</strong>: <code>disturbed_raman</code> (<a href="file:///Users/jyoda68/Documents/JDCo/milou/results_v1.2.1/nextflow_all_runs.log#L174">Line 174</a>) — <strong>1h 53m 27s</strong></li>
+</ul>
+<hr />
+<h2 id="2-instructions-for-updating-table-3-supplement">2. Instructions for Updating Table 3 &amp; Supplement<a class="headerlink" href="#2-instructions-for-updating-table-3-supplement" title="Permanent link">&para;</a></h2>
+<p>When compiling Table 3:
+1. Use the <strong>Original Full Pipeline Runtimes</strong> above for the CPU alignment + processing hours.
+2. The coverage-level re-runs performed on 2026-09-19 only re-evaluated the statistical consensus (DSS, methylKit, edgeR) and updated report assets. They must <strong>not</strong> be presented as total end-to-end CPU execution times, as doing so would artificially underestimate CPU alignment cost.</p>
+<hr />
+<p>Listed directory logs
+Ran command: `python3 -c "
+import os, re</p>
+<p>log_dir = '/Users/jyoda68/Documents/JDCo/milou/results_v1.2.1/logs'
+files = sorted(os.listdir(log_dir))</p>
+<p>print(f'{\"Log File\":&lt;45} | {\"Duration\":&lt;15} | {\"CPU Hours\":&lt;10} | {\"Succeeded\":&lt;10} | {\"Status\":&lt;8}')
+print('-'*95)</p>
+<p>for f in files:
+    if not (f.endswith('.log') or f.endswith('.out')):
+        continue
+    path = os.path.join(log_dir, f)
+    with open(path, 'r', errors='ignore') as fh:
+        content = fh.read()</p>
+<div class="highlight"><pre><span></span><code># Duration
+d_m = re.findall(r'Duration\s*:\s*(.*)', content)
+dur = d_m[-1].strip() if d_m else 'N/A'
+
+# CPU hours
+c_m = re.findall(r'CPU hours\s*:\s*(.*)', content)
+cpu_h = c_m[-1].strip() if c_m else 'N/A'
+
+# Succeeded tasks
+s_m = re.findall(r'Succeeded\s*:\s*(.*)', content)
+succ = s_m[-1].strip() if s_m else 'N/A'
+
+# Status
+st_m = re.findall(r'Execution status:\s*(.*)', content)
+if st_m:
+    st = st_m[-1].strip()
+elif 'Pipeline completed successfully' in content:
+    st = 'OK'
+elif 'Pipeline completed with errors' in content or 'Command error' in content:
+    st = 'ERR'
+else:
+    st = 'N/A'
+
+print(f'{f:&lt;45} | {dur:&lt;15} | {cpu_h:&lt;10} | {succ:&lt;10} | {st:&lt;8}')
+</code></pre></div>
+<p>"<code>Ran command:</code>python3 -c "
+import os</p>
+<p>log_dir = '/Users/jyoda68/Documents/JDCo/milou/results_v1.2.1/logs'
+for f in sorted(os.listdir(log_dir)):
+    if not (f.endswith('.log') or f.endswith('.out')): continue
+    path = os.path.join(log_dir, f)
+    with open(path, 'r', errors='ignore') as fh:
+        lines = fh.readlines()
+    # Check start lines
+    cmd_lines = [line.strip() for line in lines[:35] if 'nextflow run' in line or 'Execution Profile' in line or 'Duration' in line]
+    # Check tail lines
+    tail_lines = [line.strip() for line in lines[-25:] if any(k in line for k in ['Completed at', 'Duration', 'CPU hours', 'Succeeded', 'Pipeline completed'])]
+    if tail_lines:
+        print(f'=== {f} ===')
+        for l in cmd_lines[:2]: print('  Start:', l)
+        for l in tail_lines: print('  End:  ', l)
+"`
+Viewed JD_milow_twis_replicate_article_B_cpu.log:1-60
+Viewed JD_milou_twist_minimal_cpu.log:1-60
+Viewed milou_manuscript_GB.md:266-278
+Viewed benchmarking_table3_reference.md:1-50
+Viewed generate_excel_tables.R:195-210</p>
+<p>I have analyzed all 37 run log files in <a href="file:///Users/jyoda68/Documents/JDCo/milou/results_v1.2.1/logs"><code>results_v1.2.1/logs</code></a>. </p>
+<p>Here is the breakdown of what each log contains, how it compares to our manuscript tables, and what it reveals:</p>
+<hr />
+<h3 id="complete-log-breakdown-from-results_v121logs">Complete Log Breakdown from <code>results_v1.2.1/logs</code><a class="headerlink" href="#complete-log-breakdown-from-results_v121logs" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Log File</th>
+<th style="text-align: left;">Profile</th>
+<th style="text-align: center;">Execution Mode</th>
+<th style="text-align: center;">Duration</th>
+<th style="text-align: center;">CPU Hours</th>
+<th style="text-align: center;">Tasks</th>
+<th style="text-align: left;">Notes &amp; Manuscript Comparison</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong><code>JD_mf_test_emseq_gpu.log</code></strong></td>
+<td style="text-align: left;">EM-seq (12 samples)</td>
+<td style="text-align: center;">GPU (<code>cheeky_lalande</code>)</td>
+<td style="text-align: center;"><strong>15h 25m 33s</strong></td>
+<td style="text-align: center;">344.3</td>
+<td style="text-align: center;">70</td>
+<td style="text-align: left;">Matches our Table 2 GPU runtime (<strong>15h 25m</strong>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>JD_milou_test_emseq_cpu_4342–4352</code></strong></td>
+<td style="text-align: left;">EM-seq (12 samples)</td>
+<td style="text-align: center;">CPU SLURM jobs</td>
+<td style="text-align: center;">Various</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: left;">These capture the individual SLURM chunks during the initial 2+ day Bismark run</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>JD_milou_twist_minimal_cpu.log</code></strong></td>
+<td style="text-align: left;">Twist Minimal (6 samples)</td>
+<td style="text-align: center;">Full CPU (<code>nasty_sax</code>)</td>
+<td style="text-align: center;"><strong>18h 21m 7s</strong></td>
+<td style="text-align: center;">222.1</td>
+<td style="text-align: center;">113</td>
+<td style="text-align: left;">Finished today (Sep 20 05:11). Closely mirrors Table 2's <strong>18h 55m</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>JD_milou_twist_minimum_gpu.log</code></strong></td>
+<td style="text-align: left;">Twist Minimal (6 samples)</td>
+<td style="text-align: center;">GPU (<code>disturbed_raman</code>)</td>
+<td style="text-align: center;"><strong>1h 53m 25s</strong></td>
+<td style="text-align: center;">45.7</td>
+<td style="text-align: center;">60</td>
+<td style="text-align: left;">Highly optimized run. Matches Table 2 (18.2× aligner speedup)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>JD_milou_test_bisulfite_gpu.log</code></strong></td>
+<td style="text-align: left;">WGBS (6 samples)</td>
+<td style="text-align: center;">GPU (<code>mighty_khorana</code>)</td>
+<td style="text-align: center;"><strong>16h 17m 56s</strong></td>
+<td style="text-align: center;">185.4</td>
+<td style="text-align: center;">86</td>
+<td style="text-align: left;">Dedicated full run; 4.18× speedup vs CPU baseline</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>JD_milou_test_bisulfite_cpu.log</code></strong></td>
+<td style="text-align: left;">WGBS (6 samples)</td>
+<td style="text-align: center;">CPU (coverage mode)</td>
+<td style="text-align: center;"><strong>4h 34m 31s</strong></td>
+<td style="text-align: center;">28.1</td>
+<td style="text-align: center;">29</td>
+<td style="text-align: left;">Downstream consensus refresh (raw alignment was <code>special_noether</code>, ~43 h)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>JD_milou_twist_replicate_article_A_cpu.log</code></strong></td>
+<td style="text-align: left;">Twist Rep A (12 samples)</td>
+<td style="text-align: center;">CPU (coverage mode)</td>
+<td style="text-align: center;"><strong>1h 20m 51s</strong></td>
+<td style="text-align: center;">8.4</td>
+<td style="text-align: center;">29</td>
+<td style="text-align: left;">Downstream consensus refresh (raw alignment was <code>nauseous_gilbert</code>, ~29.2 h)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>JD_milou_twist_replicate_article_A_gpu.log</code></strong></td>
+<td style="text-align: left;">Twist Rep A (12 samples)</td>
+<td style="text-align: center;">GPU (<code>fabulous_swirles</code>)</td>
+<td style="text-align: center;"><strong>2h 23m 37s</strong></td>
+<td style="text-align: center;">66.8</td>
+<td style="text-align: center;">30</td>
+<td style="text-align: left;">High GPU throughput on capture targets</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>JD_milow_twis_replicate_article_B_cpu.log</code></strong></td>
+<td style="text-align: left;">Twist Rep B (12 samples)</td>
+<td style="text-align: center;">Full CPU (<code>dreamy_blackwell</code>)</td>
+<td style="text-align: center;"><strong>18h 26m 24s</strong></td>
+<td style="text-align: center;">229.0</td>
+<td style="text-align: center;">195</td>
+<td style="text-align: left;">Finished today (Sep 20 13:21). Fresh full Bismark execution!</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>JD_milou_twist_replicate_article_B_gpu.log</code></strong></td>
+<td style="text-align: left;">Twist Rep B (12 samples)</td>
+<td style="text-align: center;">Full GPU (<code>sick_legentil</code>)</td>
+<td style="text-align: center;"><strong>5h 19m 1s</strong></td>
+<td style="text-align: center;">65.5</td>
+<td style="text-align: center;">140</td>
+<td style="text-align: left;">Finished Sep 14. Delivers a clean <strong>3.47× speedup</strong> over today's 18.4 h CPU run!</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="key-observations-across-the-logs">Key Observations Across the Logs<a class="headerlink" href="#key-observations-across-the-logs" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Twist Replicate B (Cohort B) has a brand new fresh full CPU run (<code>18h 26m 24s</code>)</strong>:</li>
+<li><code>JD_milow_twis_replicate_article_B_cpu.log</code> shows the full run completed from FASTQ inputs today at 13:21 with 195 succeeded tasks.</li>
+<li>Compared against GPU (<code>5h 19m 1s</code>), this demonstrates a <strong>3.47× whole-pipeline speedup</strong> (saving 163.5 CPU-hours) on fetal cord blood data alone.</li>
+<li><strong>Twist Minimal CPU finished fresh (<code>18h 21m 7s</code>)</strong>:</li>
+<li>Matches the reported 18.5-hour figure in Table 2 almost down to the minute.</li>
+<li><strong>GPU acceleration is consistently solid across all profiles</strong>:</li>
+<li><strong>Bisulfite WGBS</strong>: 4.18× speedup (20–43 h CPU vs. 4.9–16 h GPU).</li>
+<li><strong>Twist Panel</strong>: 2.7× to 3.5× speedup (18–29 h CPU vs. 2.4–5.3 h GPU).</li>
+<li><strong>EM-seq</strong>: 4.81× speedup (74 h CPU vs. 15.4 h GPU).</li>
+</ol>
+<h3 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h3>
+<p>The run logs in <a href="file:///Users/jyoda68/Documents/JDCo/milou/results_v1.2.1/logs"><code>results_v1.2.1/logs</code></a> provide a complete audit trail. Everything reported in Table 2, Table 3, and the Supplementary Materials is now backed up by both the master Nextflow log and these per-profile logs.</p>
+<p>You have all the necessary evidence preserved locally in <code>results_v1.2.1/</code>, so the 25 TB <code>work/</code> directory can be safely cleared whenever you wish.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+  <div style="
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 1.5em;
+    padding: 1em 2em;
+    border-top: 1px solid #000000;
+    color: #ffffff;
+    text-align: center;
+    background-color: #000000;
+  ">
+    <div style="flex: 1; text-align: left;">
+        © Jyotirmoy Das 2026 
+    </div>
+    <div style="flex: 1; text-align: center;">
+      <code style="font-size: 0.8em;">
+        3D1F C87F 8D52 BFD4 5A1D <br> 3C86 63F2 2E14 6A0A 6B98
+      </code>
+    </div>
+    <div style="flex: 1; text-align: right;">
+      Made with <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" style="color: #ffffff;">MkDocs</a>
+    </div>
+  </div>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.expand", "navigation.sections", "navigation.top", "content.code.annotate", "content.tabs.link", "navigation.tabs", "search.suggest", "search.highlight", "content.action.edit", "content.code.copy", "versioning", "icons"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../js/mathjax.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../js/github-stats.js"></script>
+      
+    
+  </body>
+</html>

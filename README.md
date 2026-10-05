@@ -85,12 +85,14 @@ A core scientific breakthrough of milou is its **Multi-Method Differential Methy
 
 ### A. Prepare Sample Sheet (`Sample_sheet.csv`)
 ```csv
-sample_id,group,read1,read2
-SRR36563094,asthmatic,data/sample1_R1.fastq.gz,data/sample1_R2.fastq.gz
-SRR36563095,asthmatic,data/sample2_R1.fastq.gz,data/sample2_R2.fastq.gz
-SRR36563098,healthy,data/sample3_R1.fastq.gz,data/sample3_R2.fastq.gz
-SRR36563099,healthy,data/sample4_R1.fastq.gz,data/sample4_R2.fastq.gz
+sample_id,group,read1,read2,assay_type
+SRR36563094,asthmatic,data/sample1_R1.fastq.gz,data/sample1_R2.fastq.gz,emseq
+SRR36563095,asthmatic,data/sample2_R1.fastq.gz,data/sample2_R2.fastq.gz,emseq
+SRR36563098,healthy,data/sample3_R1.fastq.gz,data/sample3_R2.fastq.gz,emseq
+SRR36563099,healthy,data/sample4_R1.fastq.gz,data/sample4_R2.fastq.gz,emseq
 ```
+
+> **Note on `assay_type`**: Optional per-sample column (or global `--assay_type` CLI parameter). Supports `'wgbs'` (default), `'emseq'`, or `'twist'`. For targeted Twist capture panels or enzymatic EM-seq, `milou` dynamically applies kit-specific end-repair clipping offsets (`--clip_R1 10 --clip_R2 10`) and captures Picard hybrid selection coverage metrics.
 
 ### B. High-Speed GPU Track (NVIDIA Parabricks)
 ```bash
@@ -155,6 +157,7 @@ nextflow run JD2112/milou -r main -profile twist_replicate_article_A_cpu,singula
 | Parameter | Description | Default |
 | :--- | :--- | :---: |
 | `--sample_sheet` | Path to sample sheet CSV (**required**) | `null` |
+| `--assay_type` | Global assay chemistry override: `'wgbs'`, `'emseq'`, or `'twist'` | `'wgbs'` |
 | `--genome_fasta` | Path to reference genome FASTA | `null` |
 | `--bismark_index` | Pre-built Bismark bisulfite index directory | `null` |
 | `--gtf_file` | Ensembl gene annotation GTF (for edgeR / feature overlap) | `null` |

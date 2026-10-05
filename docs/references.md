@@ -203,10 +203,10 @@ The script manages:
 * **Integrity Audit**: Cryptographic SHA256 hashes generated across input FASTQs and output tables.
 * **Security Hardening**: Non-root container execution (`appuser`), pinned base images, and continuous CVE scanning via quindecagon.
 
-#### 5.2.3 Publication Pillars (The Core Narrative)
-* **Pillar 1: The Translational Gap**: Standard pipelines stop at bedGraph/BAM files. *milou* bridges the gap by delivering automated gene-disease enrichment (DisGeNET) and a multi-caller consensus score in an executive Quarto report.
-* **Pillar 2: Mathematical Rigor**: Highlights the π-value consensus framework, establishing reproducible biological truth where orthogonal statistical distributions agree.
-* **Pillar 3: Clinical Readiness**: Built for regulated environments with coverage gating, checksumming, and security-hardened containers.
+#### 5.2.3 Architectural Design Principles
+* **Translational Unification**: Conventional methylation pipelines terminate processing at raw alignment or bedGraph tables. *milou* automates the transition to biological interpretation by integrating gene-disease association enrichment (DisGeNET), functional KEGG/GO pathways, and interactive Quarto diagnostic reports.
+* **Mathematical Consensus**: Implements the $\pi$-score ranking framework, isolating high-confidence candidate loci supported across orthogonal statistical models (Bayesian dispersion shrinkage, negative binomial GLMs, and logistic regression).
+* **Enterprise-Grade Governance**: Engineered for regulated academic and healthcare computing environments through strict coverage gating, cryptographic SHA256 checksumming, automated PHI masking, and CVE-scanned container environments.
 
 ---
 
